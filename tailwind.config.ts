@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom finance theme colors
+				finance: {
+					profit: '#10b981',
+					loss: '#ef4444',
+					warning: '#f59e0b',
+					blue: {
+						50: '#eff6ff',
+						100: '#dbeafe',
+						500: '#3b82f6',
+						600: '#2563eb',
+						700: '#1d4ed8',
+						900: '#1e3a8a'
+					}
 				}
 			},
 			borderRadius: {
@@ -84,11 +99,42 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'slide-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'pulse-profit': {
+					'0%, 100%': {
+						boxShadow: '0 0 0 0 rgba(16, 185, 129, 0.4)'
+					},
+					'50%': {
+						boxShadow: '0 0 0 8px rgba(16, 185, 129, 0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-up': 'slide-up 0.4s ease-out',
+				'pulse-profit': 'pulse-profit 2s infinite'
 			}
 		}
 	},
