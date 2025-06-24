@@ -6,7 +6,7 @@ import {
   FolderOpen,
   Users,
   Calculator,
-  Settings as SettingsIcon,
+  Settings,
   DollarSign,
   FileText,
   TrendingUp,
@@ -30,15 +30,16 @@ const navigationItems = [
   { title: "Projects", url: "/projects", icon: FolderOpen },
   { title: "Resources", url: "/resources", icon: Users },
   { title: "Rate Calculator", url: "/rate-calculator", icon: Calculator },
-  { title: "Cost Overrides", url: "/cost-overrides", icon: Settings as any },
+  { title: "Cost Overrides", url: "/cost-overrides", icon: Settings },
   { title: "Company Earnings", url: "/earnings", icon: DollarSign },
   { title: "Reports & Exports", url: "/reports", icon: FileText },
-  { title: "Settings", url: "/settings", icon: SettingsIcon },
+  { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
   const location = useLocation();
+  const collapsed = state === "collapsed";
 
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
@@ -46,7 +47,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className={collapsed ? "w-16" : "w-64"} collapsible>
+    <Sidebar className={collapsed ? "w-16" : "w-64"} collapsible="icon">
       <SidebarContent className="bg-card/30 backdrop-blur-sm border-r border-border">
         {/* Company Brand */}
         <div className="p-6 border-b border-border">
