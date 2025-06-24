@@ -2,9 +2,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, User, Calendar, DollarSign } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, User, Calendar, DollarSign, ArrowUpDown } from "lucide-react";
+import { useState } from "react";
 
 const Resources = () => {
+  const [sortBy, setSortBy] = useState("name");
+
   const resources = [
     {
       id: 1,
@@ -39,7 +43,48 @@ const Resources = () => {
       startDate: "2024-03-01",
       endDate: "2024-07-31",
     },
+    {
+      id: 4,
+      name: "Emily Davis",
+      project: "Project Gamma",
+      type: "CIR",
+      dailyRate: 720,
+      workingDays: 110,
+      earnings: 79200,
+      startDate: "2024-01-20",
+      endDate: "2024-07-15",
+    },
+    {
+      id: 5,
+      name: "Robert Wilson",
+      project: "Project Beta",
+      type: "ACR",
+      dailyRate: 800,
+      workingDays: 90,
+      earnings: 72000,
+      startDate: "2024-02-15",
+      endDate: "2024-08-30",
+    },
   ];
+
+  const sortedResources = [...resources].sort((a, b) => {
+    switch (sortBy) {
+      case "name":
+        return a.name.localeCompare(b.name);
+      case "project":
+        return a.project.localeCompare(b.project);
+      case "type":
+        return a.type.localeCompare(b.type);
+      case "dailyRate":
+        return b.dailyRate - a.dailyRate;
+      case "earnings":
+        return b.earnings - a.earnings;
+      case "workingDays":
+        return b.workingDays - a.workingDays;
+      default:
+        return 0;
+    }
+  });
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -67,8 +112,29 @@ const Resources = () => {
         </Button>
       </div>
 
+      {/* Sort Controls */}
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-muted-foreground">{sortedResources.length} resources</p>
+        <div className="flex items-center gap-2">
+          <ArrowUpDown className="w-4 h-4" />
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Sort by..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name">Name (A-Z)</SelectItem>
+              <SelectItem value="project">Project (A-Z)</SelectItem>
+              <SelectItem value="type">Type (A-Z)</SelectItem>
+              <SelectItem value="dailyRate">Daily Rate (High-Low)</SelectItem>
+              <SelectItem value="earnings">Earnings (High-Low)</SelectItem>
+              <SelectItem value="workingDays">Working Days (High-Low)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       <div className="grid gap-6">
-        {resources.map((resource) => (
+        {sortedResources.map((resource) => (
           <Card key={resource.id} className="bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
             <CardHeader>
               <div className="flex justify-between items-start">

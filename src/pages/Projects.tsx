@@ -2,9 +2,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, FolderOpen, Calendar, Users, DollarSign } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, FolderOpen, Calendar, Users, DollarSign, ArrowUpDown } from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Projects = () => {
+  const [sortBy, setSortBy] = useState("name");
+
   const projects = [
     {
       id: 1,
@@ -47,6 +52,25 @@ const Projects = () => {
     },
   ];
 
+  const sortedProjects = [...projects].sort((a, b) => {
+    switch (sortBy) {
+      case "name":
+        return a.name.localeCompare(b.name);
+      case "client":
+        return a.client.localeCompare(b.client);
+      case "submittedRate":
+        return b.submittedRate - a.submittedRate;
+      case "cirProfit":
+        return b.cirProfit - a.cirProfit;
+      case "status":
+        return a.status.localeCompare(b.status);
+      case "resources":
+        return b.resources - a.resources;
+      default:
+        return 0;
+    }
+  });
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Active":
@@ -75,8 +99,29 @@ const Projects = () => {
         </Button>
       </div>
 
+      {/* Sort Controls */}
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-muted-foreground">{sortedProjects.length} projects</p>
+        <div className="flex items-center gap-2">
+          <ArrowUpDown className="w-4 h-4" />
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Sort by..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name">Name (A-Z)</SelectItem>
+              <SelectItem value="client">Client (A-Z)</SelectItem>
+              <SelectItem value="submittedRate">Rate (High-Low)</SelectItem>
+              <SelectItem value="cirProfit">CIR Profit (High-Low)</SelectItem>
+              <SelectItem value="status">Status</SelectItem>
+              <SelectItem value="resources">Resources (High-Low)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       <div className="grid gap-6">
-        {projects.map((project) => (
+        {sortedProjects.map((project) => (
           <Card key={project.id} className="bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -147,9 +192,11 @@ const Projects = () => {
                 <div className="space-y-2">
                   <h4 className="text-sm font-medium text-muted-foreground">Actions</h4>
                   <div className="space-y-2">
-                    <Button variant="outline" size="sm" className="w-full">
-                      View Details
-                    </Button>
+                    <Link to={`/projects/${project.id}`}>
+                      <Button variant="outline" size="sm" className="w-full">
+                        View Details
+                      </Button>
+                    </Link>
                     <Button variant="outline" size="sm" className="w-full">
                       Edit Project
                     </Button>
